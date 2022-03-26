@@ -11,7 +11,7 @@ For the installation is necessary to have the following tools:
 
 You can install TypeScript using [Node.js](https://nodejs.org/)
 
-Install typescript
+* Install typescript
 
 ```bash
 npm install -g typescript
@@ -23,7 +23,7 @@ npm install -g typescript
 https://github.com/EladioRocha/genetic-algorithms-js.git
 ```
 
-On the project path run the following command to transpile .ts file to .js
+* Compile .ts files to .js
 
 ```bash
 tsc
