@@ -23,7 +23,13 @@ npm install -g typescript
 https://github.com/EladioRocha/genetic-algorithms-js.git
 ```
 
-3. Compile .ts files to .js
+3. Access the project path
+
+```bash
+cd genetic-algorithms-js
+```
+
+4. Compile .ts files to .js
 
 ```bash
 tsc
