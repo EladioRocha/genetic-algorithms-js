@@ -1,6 +1,24 @@
-import { generateParent } from './Genetic.js';
-import Random from './Random.js';
+// import GuessPassword from "./GuessPassword.js";
+// GuessPassword.run("Hello World");
 
-const rndm = Random.sample([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], 3);
-console.log(rndm)
-console.log(generateParent(10, ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'], () => 0));
+const fnWorker = function(e: any) {
+  for(let i = 0; i < Infinity; i++) {
+    // we keep a chunking logic
+    // to avoid spamming the main thread with too many messages
+    if(i % 1000 === 0) {
+      postMessage(i);
+    }
+  }
+};
+
+
+let i = 0;
+setInterval(() => {
+  console.log("El loop ha funcionado " + i + " veces");
+}, 1000);
+const blob = new Blob(["onmessage ="+fnWorker.toString()], { type: "text/javascript" });
+const worker = new Worker(window.URL.createObjectURL(blob));
+worker.onmessage = function(e) {
+  i = e.data;
+};
+worker.postMessage("start"); 
