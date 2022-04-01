@@ -28,12 +28,13 @@ function getFitness(genes: Array<string>, target: string): number {
  */
 function display(individual: Chromosome, startTime: number): void {
   const timeDiff: number = performance.now() - startTime;
-  // Show the genes, fitness and time
-  console.log(`${individual.genes.join('')} - ${individual.fitness} - ${timeDiff}`);
+  const guessPassword: HTMLElement = document.getElementById('guess-password')! as HTMLElement;
+  guessPassword.innerHTML = `${individual.genes.join('')} - ${individual.fitness} - ${timeDiff}`;
 }
 
 export default class GuessPassword {
   static geneSet: Array<any> = " abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!.,".split("");
+  private currentResult: string = "";
 
   testHelloWorld() {
     const target: string = "Hello World";
@@ -44,22 +45,18 @@ export default class GuessPassword {
    * @description Function to run the algorithm
    * @param {string} target The target to compare with the genes
    */
-  static run(target: string = ""): void {
+  static async run(target: string = ""): Promise<void> {
     const startTIme: number = performance.now();
-    // Closure to get the fitness
     const fnGetFitness: Function = (genes: Array<string>) => getFitness(genes, target);
-    // Closure to show the result
     const fnDisplay: Function = (individual: Chromosome) => display(individual, startTIme);
     const optimalFitness: number = target.length;
-    // Get the best chromosome
-    const best: Chromosome = getBest(
+    const best: Chromosome = await getBest(
       target.length,
       optimalFitness,
       GuessPassword.geneSet,
       fnGetFitness,
       fnDisplay,
     );
-    // Show the result
     display(best, startTIme);
   }
 

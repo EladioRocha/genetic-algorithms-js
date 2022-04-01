@@ -1,4 +1,5 @@
 class Random {
+  // Source: https://stackoverflow.com/questions/521295/seeding-the-random-number-generator-in-javascript/19301306#19301306 
   private mw: number = 123456789;
   private mz: number = 987654321;
   private mask: number = 0xffffffff;
@@ -10,10 +11,9 @@ class Random {
 
   /**
    * @description Function to set the seed of the random number generator
-   * @param {number | undefined} i The seed to use
+   * @param {number} i The seed to use
    */
   seed(i: number = new Date().getTime()): void {
-    // If the seed is not defined, use the current time
     this.mw = (123456789 + i) & this.mask;
     this.mz = (987654321 - i) & this.mask;
   }
@@ -32,8 +32,8 @@ class Random {
 
   /**
    * @description Function to generate a random element from an array of elements
-   * @param elements The elements to shuffle in an array
-   * @param size The size of the array 
+   * @param {Array<any>} elements The elements to shuffle in an array
+   * @param {number} size The size of the array 
    * @returns {Array<any>} The shuffled array
    */
   sample(elements: Array<any>, size: number): Array<any> {
@@ -43,7 +43,7 @@ class Random {
 
   /**
    * @description Function to get a random index from an array passing the size of the array
-   * @param length The size of the array
+   * @param {number} length The size of the array
    * @returns {number} The random index
    */
   index(length: number): number {

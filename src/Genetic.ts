@@ -53,33 +53,35 @@ export function mutate(parent: Chromosome, geneSet: Array<any>, getFitness: Func
  * @param {Function} display The display function
  * @returns {Chromosome} The best chromosome 
  */
-export function getBest(
+export async function getBest(
   targetLength: number,
   optimalFitness: number,
   geneSet: Array<any>,
   getFitness: Function,
   display: Function,
-): Chromosome {
+): Promise<Chromosome> {
+  let maximumTries: number = 100000;
   // Set random seed, currently is random without defined seed
-  random.seed(1);
+  random.seed();
   
-  // Generate a parent
   let bestParent: Chromosome = generateParent(targetLength, geneSet, getFitness);
-  display(bestParent);
-  // Check if the parent is optimal
   if (bestParent.fitness >= optimalFitness) return bestParent;
 
-  while(true) {
-    // Generate a child with the parent
+  for(let i = 0; i < maximumTries; i++) {
     const child: Chromosome = mutate(bestParent, geneSet, getFitness);
-    // Check if parent fitness is better than the child
+    display(child);
     if (bestParent.fitness >= child.fitness) continue;
-    // Check if the child is optimal
     if (child.fitness >= optimalFitness) return child;
-    // If pass here, the child is better than the parent
     bestParent = child;
+    await delay(100);
   }
-} 
+
+  return bestParent;
+}
+
+async function delay(ms: number) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
   
 export class Chromosome {
   // We create a chromosome with a set of genes and a fitness attributes
@@ -89,9 +91,9 @@ export class Chromosome {
 export class Benchmark {
   /**
    * @description Get statistics of the execution time of the algorithm
-   * @param {any} fn The function to benchmark
+   * @param {Function} fn The function to benchmark
    */
-  static run(fn: any) {
+  static run(fn: Function) {
     const timings: Array<number> = [];
     const SAMPLES_RUN: number = 100;
     for (let i = 0; i < SAMPLES_RUN; i++) {
@@ -99,12 +101,9 @@ export class Benchmark {
       fn();
       const end: number = performance.now();
       const seconds: number = (end - start) / 1000;
-      // Calculate the mean of the execution time
       timings.push(seconds);
       const mean: number = Benchmark.mean(timings);
-      // Print every 10th sample
       if (i % 10 === 0) {
-        // Print the current iteration, the current mean and the standard deviation
         console.log(`${i}/${SAMPLES_RUN} - ${mean} - ${Benchmark.standardDeviation(timings)}`);
       }
     }
