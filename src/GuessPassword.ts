@@ -34,7 +34,6 @@ function display(individual: Chromosome, startTime: number): void {
 
 export default class GuessPassword {
   static geneSet: Array<any> = " abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!.,".split("");
-  private currentResult: string = "";
 
   testHelloWorld() {
     const target: string = "Hello World";
