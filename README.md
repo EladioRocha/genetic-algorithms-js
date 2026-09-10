@@ -1,72 +1,41 @@
-# genetic-algorithms-js
+# Genetic Algorithms in TypeScript
 
-Ejercicios de algoritmos genéticos escritos en TypeScript, con JavaScript compilado en `dist/` y una página HTML para ejecutarlos.
+Browser-based exercises inspired by *Genetic Algorithms with Python* by **Clinton Sheppard**. TypeScript source is compiled to JavaScript in `dist`, allowing the string-matching experiment to run directly in a browser.
 
-## Estructura
+## Run locally
 
-- [dist](dist)
-- [src](src)
-- [index.html](index.html)
-
-## Preparación y uso
-
-Sirve la raíz con un servidor estático; por ejemplo, si tienes Python 3:
+From the repository root, use Python 3 to start a static server:
 
 ```sh
 python -m http.server 8000 --bind 127.0.0.1
 ```
 
-Abre `http://127.0.0.1:8000/` y navega al ejemplo:
+Open `http://127.0.0.1:8000` in a browser. No npm installation or build step is required to view the checked-in example. Stop the server with `Ctrl+C`.
 
-- [index.html](index.html)
+## What the example does
 
-Los recursos cargados desde servicios externos requieren conexión. La comprobación local debe incluir la consola del navegador y la carga de imágenes, scripts y estilos.
+[src/index.ts](src/index.ts) starts `GuessPassword.run()` with a fixed Lorem ipsum target. Candidate strings are scored by counting characters that match the target at the same position. The page displays the current candidate, fitness, and elapsed time in milliseconds.
 
-## Validación y estado
+The name “GuessPassword” describes a toy target-string exercise. It does not connect to accounts, attempt authentication, or recover real passwords.
 
-Esta guía se contrastó con el árbol de archivos y los manifiestos del repositorio. No se ha validado una ejecución completa contra servicios externos, bases de datos o hardware. Las versiones y los scripts mostrados describen el código actual; no implican que sus dependencias antiguas sigan siendo compatibles.
+## Modify and compile
 
-## Documentación previa
+The checked-in `dist` files are sufficient for the existing demo. To modify TypeScript, install a TypeScript compiler in your development environment, then run from the repository root:
 
-Se conserva como referencia histórica, incluidas las imágenes y atribuciones originales. Los enlaces a demos y servicios no se han comprobado.
-
-# Genetic Algorithms using Javascript
-
-This is a repository that contains genetic algorithms written in javascript using typescript. The written algorithms are based on the book called *"Genetic Algorithms with Python" by Clinton Sheppard*.
-
-The intention of create it with javascript is to see the execution directly in the browser.
-
-## Installation
-
-For the installation is necessary to have the following tools:
-* [TypeScript](https://www.typescriptlang.org/)
-
-You can install TypeScript using [Node.js](https://nodejs.org/)
-
-1. Install typescript
-
-```bash
-npm install -g typescript
+```sh
+tsc -p tsconfig.json
 ```
 
-2. Clone the repository
+The compiler reads `src` and writes ES modules and source maps to `dist`. Serve the files over HTTP rather than opening `index.html` through `file://`.
 
-```bash
-https://github.com/EladioRocha/genetic-algorithms-js.git
-```
+Change the target in `src/index.ts` and recompile. Every target character must exist in `GuessPassword.geneSet`; otherwise optimal fitness cannot be reached.
 
-3. Access the project path
+## Source map
 
-```bash
-cd genetic-algorithms-js
-```
+- [src/Genetic.ts](src/Genetic.ts): chromosome search and benchmark helpers.
+- [src/GuessPassword.ts](src/GuessPassword.ts): string fitness and rendering.
+- [src/Random.ts](src/Random.ts): random helpers.
+- [index.html](index.html): browser entry point.
+- [tsconfig.json](tsconfig.json): compiler configuration.
 
-4. Compile .ts files to .js
-
-```bash
-tsc
-```
-
-## Usage
-
-Once installed the necessary tools, at this step you should be able to run the algorithms, to do this, we open the file **index.html**
+There is no package manifest, pinned compiler version, or automated test runner. Results and runtime vary because the search is randomized. The book attribution is preserved from the original README.
